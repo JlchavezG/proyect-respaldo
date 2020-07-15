@@ -20,7 +20,40 @@ $ejecuta = $conecta->query($nivel);
 // validar que coinsidan los password
 $pass = $_POST['password'];
 $cpass = $_POST['cpassword'];
- ?>
+if (isset($_POST['registro'])) {
+   if ($pass != $cpass) {
+     $alerta.= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                  <strong>Error al verificar Password</strong> Los passwords no coinciden por favor verificalo.
+                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                  </button>
+               </div>";
+   }
+// consulta para verificar usuarios registrados
+   
+else {
+// recolectar datos para el registro
+$Nombre = $conecta->real_escape_string($_POST['nombre']);
+$Apellido1 = $conecta->real_escape_string($_POST['apellidop']);
+$Apellido2 = $conecta->real_escape_string($_POST['apellidom']);
+$Nivel = $conecta->real_escape_string($_POST['tusuario']);
+$Telefono = $conecta->real_escape_string($_POST['telefono']);
+$Email = $conecta->real_escape_string($_POST['email']);
+$Username = $conecta->real_escape_string($_POST['user']);
+$Password = md5($_POST['password']);
+// consulta para registro de usuarios
+$nuevo = "INSERT INTO Usuarios(Nombre,ApellidoP,ApellidoM,Id_Nivel,Telefono,Email,Usuario,Password)
+VALUES('$Nombre','$Apellido1','$Apellido2','$Nivel','$Telefono','$Email','$Username','$Password')";
+$registro= $conecta->query($nuevo);
+if ($registro > 0) {
+  $alerta.= "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+               <strong>Registro Exitoso</strong> El usuario ya esta registrado en el sistema.
+               <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                 <span aria-hidden='true'>&times;</span>
+               </button>
+            </div>";
+}}}
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -51,7 +84,7 @@ $cpass = $_POST['cpassword'];
                  <h4 class="mt-4 text text-center">Registro de Usuario </h4>
                  <div class="container py-3">
                    <!-- inicia formulario de registro -->
-                   <form name="registro" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                   <form name="registroU" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                       <div class="row">
                              <div class="col">
                                   <input type="text" class="form-control" name="nombre" placeholder="Nombre" required>
@@ -91,10 +124,15 @@ $cpass = $_POST['cpassword'];
                        </div>
                      </div>
                      <div class="row py-3">
-                               <input type="submit" name="submit" value="Registrar" class="btn btn-success btn-sm btn-lg btn-block">
+                          <input type="submit" name="registro" value="Registrar" class="btn btn-success btn-sm btn-lg btn-block">
+                     </div>
+                     <div class="row">
+                        <div class="col">
+                            <?php echo $alerta; ?>
+                        </div>
+                     </div>
                      </div>
                   </form>
-                  <?php echo $alerta; ?>
                   <!-- termina formulario -->
              </div>
        </div>
