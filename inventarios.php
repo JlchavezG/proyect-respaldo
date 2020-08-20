@@ -48,19 +48,17 @@ if ($fila > 0) {
                  </div>
                  <h1 class="mt-4 text text-center">Dashboard de <?php echo $TDasboard; ?></h1>
                  <p class="text-muted text-center">Bienvenido a Inventarios <?php echo $usuario; ?></p>
-                 <div class="">
-                     
-                 </div>
              </div>
-
-                <script type="text/javascript">
-
-                </script>
-
+             <div class="container">
+               <input type="text" name="txtbuscar" id="buscar" class="form-control" placeholder="Buscar dato" required >
+               <br>
+               <div id="datos"></div>
+            </div>  
        </div>
       <!-- Termina Contenido de la pagina -->
    </div>
    <!-- scripts -->
+   <script src="js/funciones.js"></script>
    <script src="js/bootstrap.js"></script>
    <script src="js/jquery-3.5.1.min.js"></script>
    <script src="js/bootstrap.min.js"></script>
