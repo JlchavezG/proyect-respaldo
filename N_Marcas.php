@@ -18,6 +18,43 @@ if ($fila > 0) {
 $marca = "SELECT * FROM Marcas ORDER BY Id_Nivel";
 $ejecuta = $conecta->query($marca);
 
+if (isset($_POST['submit'])) {
+  $Marca = $conecta->real_escape_string($_POST['nombre']);
+  $Codigo = $conecta->real_escape_string($_POST['codigo']);
+  // consulta para verificiar si no existe la marca en el sistema
+  $nmarca = "SELECT * FROM Marcas WHERE Nombre = '$Marca'";
+  $ejecuta = $conecta->query($nmarca);
+  if ($ejecuta->num_rows > 0) {
+    $alerta.= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                 <strong>Error al verificar la marca</strong> La marca de laptop ya se encuentra registrada en el sistema.
+                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                   <span aria-hidden='true'>&times;</span>
+                 </button>
+              </div>";
+  }
+  else{
+    $ncodigo = "SELECT * FROM Marcas WHERE Codigo = '$Codigo'";
+    $ejecutar = $conecta->query($ncodigo);
+    if ($ejecutar->num_rows > 0) {
+      $alerta.= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                   <strong>Error al verificar el codigo</strong> El codigo de laptop ya se encuentra registrada en el sistema.
+                   <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                     <span aria-hidden='true'>&times;</span>
+                   </button>
+                </div>";
+  }
+  else {
+  // consulta para registrar la nueva marca
+  $insert = "INSERT INTO Marcas(Nombre,Codigo)VALUES('$Marca','$Codigo')";
+  $inserta = $conecta->query($insert);
+  $alerta.= "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+               <strong>Registro Exitoso</strong> La Marca de laptop se registro en el sistema.
+               <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                 <span aria-hidden='true'>&times;</span>
+               </button>
+            </div>";
+}
+}}
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -29,6 +66,7 @@ $ejecuta = $conecta->query($marca);
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/fontello.css">
     <link rel="stylesheet" href="css/simple-sidebar.css">
+    <link rel="stylesheet" href="css/pace.css">
     <title>Inicio | Nueva marca</title>
   </head>
   <body>
@@ -42,6 +80,8 @@ $ejecuta = $conecta->query($marca);
       <div id="page-content-wrapper">
            <?php include 'includes/barra.php'; ?>
            <?php include 'includes/mcerrar.php';?>
+           <!-- calendario -->
+           <?php include 'includes/calendario.php'; ?>
              <div class="container-fluid">
                  <div class="text text-right">
                     <p class="nav-link"><span class="icon-calendar"></span> Fecha :<?php echo date("d")."de el " .date("m"). " de " .date("Y");?></p>
@@ -61,9 +101,12 @@ $ejecuta = $conecta->query($marca);
                      <div class="row py-3">
                                <input type="submit" name="submit" value="Registrar" class="btn btn-success btn-sm btn-lg btn-block">
                      </div>
+                        <?php echo $alerta; ?>
+                        <div class="container row py-3">
+                             <a href="RegistroS.php"><span class="icon-left-big"></span></a> Regresar a Registros
+                        </div>
                    </div>
                   </form>
-                  <?php echo $alerta; ?>
                   <!-- termina formulario -->
              </div>
        </div>
@@ -73,6 +116,7 @@ $ejecuta = $conecta->query($marca);
    <script src="js/bootstrap.js"></script>
    <script src="js/jquery-3.5.1.min.js"></script>
    <script src="js/bootstrap.min.js"></script>
+   <script src="js/pace.min.js"></script>
    <!-- habilitar los toast -->
    <script>
     $("#menu-toggle").click(function(e) {

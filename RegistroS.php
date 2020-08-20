@@ -25,6 +25,7 @@ if ($fila > 0) {
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/fontello.css">
     <link rel="stylesheet" href="css/simple-sidebar.css">
+    <link rel="stylesheet" href="css/pace.css">
     <title>Inicio | Registro de sistemas</title>
   </head>
   <body>
@@ -39,11 +40,13 @@ if ($fila > 0) {
       <div id="page-content-wrapper">
            <?php include 'includes/barra.php'; ?>
            <?php include 'includes/mcerrar.php';?>
+           <!-- calendario -->
+           <?php include 'includes/calendario.php'; ?>
              <div class="container-fluid">
                  <div class="text text-right">
-                    <p class="nav-link"><span class="icon-calendar"></span> Fecha :<?php echo date("d")."de el " .date("m"). " de " .date("Y");?></p>
+
                  </div>
-                 <h1 class="mt-4 text text-center">Registro de <?php echo $TDasboard; ?></h1>
+                 <h3 class="mt-4 text text-center">Registro de <?php echo $TDasboard; ?></h3>
                  <!-- inicia tarjetas para link de funciones -->
                  <div class="container py-4">
                       <div class="row">
@@ -51,12 +54,12 @@ if ($fila > 0) {
                              <div class="card mb-3" style="max-width: 540px;">
                                 <div class="row no-gutters">
                                    <div class="col-md-4">
-                                      <!-- icono -->
+                                      <h2 class="text text-center py-2"><span class="icon-monitor"></span></h2>
                                    </div>
                                    <div class="col-md-8">
                                    <div class="card-body">
-                                      <a href="N_Equipo.php"><h5 class="card-title"><span class="icon-monitor"></span> + Equipo</h5></a>
-                                      <p class="card-text"><small class="text-muted">Registros</small></p>
+                                      <h5 class="card-title"><a href="N_Equipo.php" class="text-secondary text-decoration-none"> + Equipo</h5></a>
+                                      <p class="card-text"><small class="text-muted">Registrar equipo en el sistema.</small></p>
                                    </div>
                                 </div>
                            </div>
@@ -66,12 +69,12 @@ if ($fila > 0) {
                            <div class="card mb-3" style="max-width: 540px;">
                                <div class="row no-gutters">
                                   <div class="col-md-4">
-                                     <!-- icono -->
+                                     <h2 class="text text-center py-2"><span class="icon-bell"></span></h2>
                                   </div>
                                   <div class="col-md-8">
                                   <div class="card-body">
-                                      <a href="N_notificacion.php"><h5 class="card-title"><span class="icon-user-1"></span> + Notificación</h5></a>
-                                      <p class="card-text"><small class="text-muted">Registros</small></p>
+                                      <h5 class="card-title"><a href="N_notificacion.php" class="text-secondary text-decoration-none"> + Notificación</h5></a>
+                                      <p class="card-text"><small class="text-muted">Enviar Notificaciones</small></p>
                                   </div>
                               </div>
                           </div>
@@ -81,12 +84,12 @@ if ($fila > 0) {
                              <div class="card mb-3" style="max-width: 540px;">
                                  <div class="row no-gutters">
                                     <div class="col-md-4">
-                                        <!-- icono -->
+                                        <h2 class="text text-center py-2"><span class="icon-binoculars"></span></h2>
                                     </div>
                                     <div class="col-md-8">
                                     <div class="card-body">
-                                       <a href="N_Marcas.php"><h5 class="card-title"><span class="icon-link"></span> + Marca</h5></a>
-                                          <p class="card-text"><small class="text-muted">Registros</small></p>
+                                       <h5 class="card-title"><a href="N_Marcas.php" class="text-secondary text-decoration-none"> Nueva Marca</h5></a>
+                                          <p class="card-text"><small class="text-muted">Agregar nueva marca de equipo</small></p>
                                     </div>
                                  </div>
                               </div>
@@ -101,12 +104,27 @@ if ($fila > 0) {
                                  <div class="card mb-3" style="max-width: 540px;">
                                      <div class="row no-gutters">
                                         <div class="col-md-4">
-                                          <!-- icono -->
+                                          <h2 class="text text-center py-2"><span class="icon-user-1"></span></h2>
                                         </div>
                                         <div class="col-md-8">
                                         <div class="card-body">
-                                           <a href="Nusuario.php"><h5 class="card-title"><span class="icon-unlink"></span> + Usuario</h5></a>
-                                              <p class="card-text"><small class="text-muted">Registros</small></p>
+                                           <h5 class="card-title"><a href="Nusuario.php" class="text-secondary text-decoration-none"> + Usuario</h5></a>
+                                              <p class="card-text"><small class="text-muted">Nuevo Usuario</small></p>
+                                        </div>
+                                     </div>
+                                  </div>
+                                 </div>
+                               </div>
+                               <div class="col-sm">
+                                 <div class="card mb-3" style="max-width: 540px;">
+                                     <div class="row no-gutters">
+                                        <div class="col-md-4">
+                                            <h2 class="text text-center py-2"><span class="icon-resize-full"></span></h2>
+                                        </div>
+                                        <div class="col-md-8">
+                                        <div class="card-body">
+                                           <h5 class="card-title"><a href="N_Asignacion.php" class="text-secondary text-decoration-none"> Asignar Equipo</h5></a>
+                                              <p class="card-text"><small class="text-muted">Elazar equipo con usuario</small></p>
                                         </div>
                                      </div>
                                   </div>
@@ -114,8 +132,9 @@ if ($fila > 0) {
                                </div>
                             </div>
                          </div>
+                            </div>
+                         </div>
                         <!-- termina dashboard -->
-
                  <!-- termina tarjetas de funciones -->
              </div>
        </div>
@@ -125,6 +144,7 @@ if ($fila > 0) {
    <script src="js/bootstrap.js"></script>
    <script src="js/jquery-3.5.1.min.js"></script>
    <script src="js/bootstrap.min.js"></script>
+   <script src="js/pace.min.js"></script>
    <!-- habilitar los toast -->
    <script>
     $("#menu-toggle").click(function(e) {

@@ -16,10 +16,15 @@ if ($fila > 0) {
 }
 // consulta para extrar el nivel de usuario
 $nivel = "SELECT * FROM Niveles ORDER BY Id_Nivel";
-$ejecuta = $conecta->query($nivel);
+$q = $conecta->query($nivel);
 // validar que coinsidan los password
 $pass = $_POST['password'];
 $cpass = $_POST['cpassword'];
+// capturar la imagen de usuario en la carpeta de el sistema
+    $nombre_archivo = $_FILES['imagen']['name'];
+    if ($_FILES['imagen']) {
+    move_uploaded_file($_FILES['imagen']['tmp_name'],"img/users/".$nombre_archivo);
+    }
 if (isset($_POST['registro'])) {
    if ($pass != $cpass) {
      $alerta.= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
@@ -29,8 +34,6 @@ if (isset($_POST['registro'])) {
                   </button>
                </div>";
    }
-// consulta para verificar usuarios registrados
-   
 else {
 // recolectar datos para el registro
 $Nombre = $conecta->real_escape_string($_POST['nombre']);
@@ -41,9 +44,22 @@ $Telefono = $conecta->real_escape_string($_POST['telefono']);
 $Email = $conecta->real_escape_string($_POST['email']);
 $Username = $conecta->real_escape_string($_POST['user']);
 $Password = md5($_POST['password']);
+$Pic = $nombre_archivo;
+$fecha = date('Y-m-d');
+// consulta para verificar usuarios registrados
+$revisa = "SELECT * FROM Usuarios WHERE Usuario = '$Username'";
+$checar = $conecta->query($revisa);
+  if ($checar->num_rows > 0) {
+    $alerta.= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                 <strong>Error de nombre de Usuario</strong> El nombre de usuario ya se encuentra registrado en el sistema.
+                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+                   <span aria-hidden='true'>&times;</span>
+                 </button>
+              </div>";
+  }
+else {
 // consulta para registro de usuarios
-$nuevo = "INSERT INTO Usuarios(Nombre,ApellidoP,ApellidoM,Id_Nivel,Telefono,Email,Usuario,Password)
-VALUES('$Nombre','$Apellido1','$Apellido2','$Nivel','$Telefono','$Email','$Username','$Password')";
+$nuevo = "INSERT INTO Usuarios(Nombre,ApellidoP,ApellidoM,Id_Nivel,Telefono,Email,Usuario,Password,Imagen,Fecha)VALUES('$Nombre','$Apellido1','$Apellido2','$Nivel','$Telefono','$Email','$Username','$Password','$Pic','$fecha')";
 $registro= $conecta->query($nuevo);
 if ($registro > 0) {
   $alerta.= "<div class='alert alert-success alert-dismissible fade show' role='alert'>
@@ -52,7 +68,7 @@ if ($registro > 0) {
                  <span aria-hidden='true'>&times;</span>
                </button>
             </div>";
-}}}
+}}}}
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -64,6 +80,7 @@ if ($registro > 0) {
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/fontello.css">
     <link rel="stylesheet" href="css/simple-sidebar.css">
+    <link rel="stylesheet" href="css/pace.css">
     <title>Inicio | Sistemas de Control</title>
   </head>
   <body>
@@ -77,6 +94,8 @@ if ($registro > 0) {
       <div id="page-content-wrapper">
            <?php include 'includes/barra.php'; ?>
            <?php include 'includes/mcerrar.php';?>
+           <!-- calendario -->
+           <?php include 'includes/calendario.php'; ?>
              <div class="container-fluid">
                  <div class="text text-right">
                     <p class="nav-link"><span class="icon-calendar"></span> Fecha :<?php echo date("d")."de el " .date("m"). " de " .date("Y");?></p>
@@ -84,7 +103,7 @@ if ($registro > 0) {
                  <h4 class="mt-4 text text-center">Registro de Usuario </h4>
                  <div class="container py-3">
                    <!-- inicia formulario de registro -->
-                   <form name="registroU" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                   <form name="form1" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data" id="form1">
                       <div class="row">
                              <div class="col">
                                   <input type="text" class="form-control" name="nombre" placeholder="Nombre" required>
@@ -100,7 +119,7 @@ if ($registro > 0) {
                         <div class="col">
                               <select class="custom-select" name="tusuario" required>
                                    <option value="">Selecciona el tipo de Usuario</option>
-                                   <?php while($row = $ejecuta->fetch_assoc()) { ?>
+                                   <?php while($row = $q->fetch_assoc()) { ?>
                                    <option value="<?php echo $row['Id_Nivel'];?>"><?php echo $row['Nombre'];?></option>
                                    <?php } ?>
                               </select>
@@ -123,15 +142,25 @@ if ($registro > 0) {
                                <input type="password" class="form-control" name="cpassword" placeholder="Confirma Password" required>
                        </div>
                      </div>
+                       <div class="row py-3">
+                          <div class="col">
+                              <label for="imagen"> Subir Imagen de Perfil</label>
+                               <input type="file" name="imagen" required>
+                          </div>
+                       </div>
                      <div class="row py-3">
                           <input type="submit" name="registro" value="Registrar" class="btn btn-success btn-sm btn-lg btn-block">
                      </div>
                      <div class="row">
                         <div class="col">
                             <?php echo $alerta; ?>
+                        </div>    
+                        </div>
+                        <div class="container row py-3">
+                             <a href="RegistroS.php"><span class="icon-left-big"></span></a> Regresar a Registros
                         </div>
                      </div>
-                     </div>
+                   </div>
                   </form>
                   <!-- termina formulario -->
              </div>
@@ -142,6 +171,7 @@ if ($registro > 0) {
    <script src="js/bootstrap.js"></script>
    <script src="js/jquery-3.5.1.min.js"></script>
    <script src="js/bootstrap.min.js"></script>
+   <script src="js/pace.min.js"></script>
    <!-- habilitar los toast -->
    <script>
     $("#menu-toggle").click(function(e) {

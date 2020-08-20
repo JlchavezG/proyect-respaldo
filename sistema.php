@@ -25,7 +25,8 @@ if ($fila > 0) {
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/fontello.css">
     <link rel="stylesheet" href="css/simple-sidebar.css">
-    <title>Inicio | Sistemas de Control</title>
+    <link rel="stylesheet" href="css/pace.css">
+    <title>Inicio | inventarios</title>
   </head>
   <body>
     <div class="d-flex" id="wrapper">
@@ -39,11 +40,14 @@ if ($fila > 0) {
       <div id="page-content-wrapper">
            <?php include 'includes/barra.php'; ?>
            <?php include 'includes/mcerrar.php';?>
+           <!-- calendario -->
+           <?php include 'includes/calendario.php'; ?>
              <div class="container-fluid">
                  <div class="text text-right">
-                    <p class="nav-link"><span class="icon-calendar"></span> Fecha :<?php echo date("d")."de el " .date("m"). " de " .date("Y");?></p>
+
                  </div>
                  <h1 class="mt-4 text text-center">Dashboard de <?php echo $TDasboard; ?></h1>
+                 <p class="text-muted text-center">Bienvenido a Inventarios <?php echo $usuario; ?></p>
                  <?php
                     $dasboard = $user['Id_Nivel']; if ($dasboard == 1) { include 'includes/dashboardS.php'; } elseif ($dasboard == 2) { include 'includes/dashboardA.php';} else { include 'includes/dashboardU.php'; }
                  ?>
@@ -55,6 +59,8 @@ if ($fila > 0) {
    <script src="js/bootstrap.js"></script>
    <script src="js/jquery-3.5.1.min.js"></script>
    <script src="js/bootstrap.min.js"></script>
+   <script src="js/pace.min.js"></script>
+   <script src="js/main.js"></script>
    <!-- habilitar los toast -->
    <script>
     $("#menu-toggle").click(function(e) {

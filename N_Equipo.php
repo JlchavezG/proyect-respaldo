@@ -16,10 +16,36 @@ if ($fila > 0) {
 }
 // consulta para extrar marcas de equipos
 $marca = "SELECT * FROM Marcas ORDER BY Id_Marca";
-$ejecuta = $conecta->query($marca);
+$nmarca = $conecta->query($marca);
 // consulta para extraer estatus
 $status = "SELECT * FROM Estatus ORDER BY Id_estatus";
 $ejecuta2 = $conecta->query($status);
+// generar cadena de registro automatico
+$caracteres = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-.#!";
+for ($i=0; $i < 10 ; $i++) {
+   $token = substr(str_shuffle($caracteres),0,10);
+}
+// recuerar datos para el registro de equipo
+$Modelo = $conecta->real_escape_string($_POST['Modelo']);
+$Marca = $conecta->real_escape_string($_POST['Marca']);
+$Nserie = $conecta->real_escape_string($_POST['Serie']);
+$Nkey = $conecta->real_escape_string($_POST['key']);
+$reset = $conecta->real_escape_string($_POST['reset']);
+$Fecha = date('Y-m-d');
+$RegAuto = $token;
+$Estatus = $conecta->real_escape_string($_POST['Estatus']);
+$ident = 0;
+// registro de un equipo en el sistema
+$registro = "INSERT INTO Laptop(Modelo,Id_marca,Nserie,NKey,Reset,Fecha,RegAuto,Estatus,Identificador)VALUES('$Modelo','$Marca','$Nserie','$Nkey','$reset','$Fecha','$RegAuto','$Estatus','$ident')";
+$registra = $conecta->query($registro);
+if($registra > 0){
+$alerta.= "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+             <strong>Registro Exitoso</strong> El equipo se registro dentro de el sistema.
+             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+               <span aria-hidden='true'>&times;</span>
+             </button>
+          </div>";
+}
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -29,6 +55,7 @@ $ejecuta2 = $conecta->query($status);
     <meta name="description" content="sistema de almacenes e inventarios de equipo de computo laptops">
     <meta name="author" content="iscjlchavesg">
     <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/pace.css">
     <link rel="stylesheet" href="css/fontello.css">
     <link rel="stylesheet" href="css/simple-sidebar.css">
     <title>Inicio | Registro de Equipo</title>
@@ -44,6 +71,8 @@ $ejecuta2 = $conecta->query($status);
       <div id="page-content-wrapper">
            <?php include 'includes/barra.php'; ?>
            <?php include 'includes/mcerrar.php';?>
+           <!-- calendario -->
+           <?php include 'includes/calendario.php'; ?>
              <div class="container-fluid">
                  <div class="text text-right">
                     <p class="nav-link"><span class="icon-calendar"></span> Fecha :<?php echo date("d")."de el " .date("m"). " de " .date("Y");?></p>
@@ -54,28 +83,31 @@ $ejecuta2 = $conecta->query($status);
                    <form name="registro" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                       <div class="row">
                              <div class="col">
-                                  <input type="text" class="form-control" name="modelo" placeholder="Modelo" required>
+                                  <input type="text" class="form-control" name="Modelo" placeholder="Modelo" required>
                              </div>
                       </div>
                       <div class="row py-3">
                         <div class="col">
-                              <select class="custom-select" name="marca" required>
+                              <select class="custom-select" name="Marca" required>
                                    <option value="">Selecciona la marca de el equipo</option>
-                                   <?php while($row = $ejecuta->fetch_assoc()) { ?>
+                                   <?php while($row = $nmarca->fetch_assoc()) { ?>
                                    <option value="<?php echo $row['Id_Marca'];?>"><?php echo $row['Nombre'];?></option>
                                    <?php } ?>
                               </select>
                         </div>
                         <div class="col">
-                                <input type="text" class="form-control" name="serie" placeholder="Nº de serie" required>
+                                <input type="text" class="form-control" name="Serie" placeholder="Nº de serie" required>
                         </div>
                         <div class="col">
-                                <input type="text" class="form-control" name="key" placeholder="Nkey" required>
+                                <input type="text" class="form-control" name="key" placeholder="Recovery" required>
+                        </div>
+                        <div class="col">
+                                <input type="text" class="form-control" name="reset" placeholder="Reset" required>
                         </div>
                      </div>
                      <div class="row py-3">
                        <div class="col">
-                         <select class="custom-select" name="marca" required>
+                         <select class="custom-select" name="Estatus" required>
                               <option value="">Selecciona Estatus</option>
                               <?php while($row1 = $ejecuta2->fetch_assoc()) { ?>
                               <option value="<?php echo $row1['Id_estatus'];?>"><?php echo $row1['Nombre'];?></option>
@@ -89,6 +121,9 @@ $ejecuta2 = $conecta->query($status);
                   </form>
                   <?php echo $alerta; ?>
                   <!-- termina formulario -->
+                  <div class="container row py-3">
+                       <a href="RegistroS.php"><span class="icon-left-big"></span></a> Regresar a Registros
+                  </div>
              </div>
        </div>
       <!-- Termina Contenido de la pagina -->
@@ -97,6 +132,7 @@ $ejecuta2 = $conecta->query($status);
    <script src="js/bootstrap.js"></script>
    <script src="js/jquery-3.5.1.min.js"></script>
    <script src="js/bootstrap.min.js"></script>
+   <script src="js/pace.min.js"></script>
    <!-- habilitar los toast -->
    <script>
     $("#menu-toggle").click(function(e) {
