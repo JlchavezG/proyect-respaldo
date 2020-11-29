@@ -22,6 +22,7 @@ if (empty($_POST['submit'])) {
        $where = "WHERE Fecha LIKE '%$valor%'";
     }
 }
+
 // consulta para extraer los datos de los usuarios
 $buscar = "SELECT * FROM Asignaciones $where";
 $busca = $conecta->query($buscar);
@@ -71,7 +72,7 @@ $numero = $busca->num_rows;
                                <table class="table">
                                   <thead class="text-muted">
                                      <th>Id_Laptop</th>
-                                     <th>Id_Uusario</th>
+                                     <th>Id_Usario</th>
                                      <th>Fecha</th>
                                      <th>Numero</th>
                                      <th>Usuario</th>

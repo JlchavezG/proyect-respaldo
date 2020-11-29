@@ -19,7 +19,7 @@ $where = "";
 if (empty($_POST['submit'])) {
     $valor = $_POST['Nombre'];
     if (!empty($valor)) {
-       $where = "WHERE Nombre LIKE '%$valor%'";
+       $where = "WHERE NombreM LIKE '%$valor%'";
     }
 }
 // consulta para extraer los datos de los usuarios
@@ -77,7 +77,7 @@ $numero = $busca->num_rows;
                                   <tbody>
                                     <?php while($row = $busca->fetch_assoc()){ ?>
                                      <tr>
-                                       <td><?php echo $row['Nombre']; ?></td>
+                                       <td><?php echo $row['NombreM']; ?></td>
                                        <td><?php echo $row['Codigo']; ?></td>
                                        <td><a href="Marcas.php?Id_Marca=<?php echo $row['Id_Marca'] ?>"><span class="icon-pencil"></span></a> - <a href="./includes/Eliminar_marca.php?Id_Marca=<?php echo $row['Id_Marca'] ?>" onclick = "confirm(¿Estas Seguro de querer Eliminar el registro?);"><span class="icon-trash"></span></a></td>
                                      </tr>

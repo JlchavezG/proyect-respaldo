@@ -58,7 +58,7 @@ $numero = $as->num_rows;
                          <table class="table table-sm table-hover">
                              <thead>
                                 <tr>
-                                  <th scope="col">Numero</th>
+                                  <th scope="col">Asignacion</th>
                                   <th scope="col">Laptop</th>
                                   <th scope="col">Usuario</th>
                                   <th scope="col">Fecha</th>
