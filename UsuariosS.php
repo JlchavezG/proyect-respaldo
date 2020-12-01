@@ -61,9 +61,14 @@ $numero = $busca->num_rows;
                  <h3 class="mt-4 text text-center">Consulta de Usuarios</h3>
                        <div class="container py-3">
                           <a href="ConsultasS.php"><span class="icon-left-big"></span></a> Regresar a Consultas
+                          <div class="row">
+                              <div class="container">
+                               <a href="Ue_Usuarios.php">Buscar por Email</a> | <a href="BU_Usuario.php">Buscar por Usuario</a>
+                              </div>
+                          </div>
                            <div class="card-body">
                               <form class="" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                                <input type="text" name="Nombre" class="form-control" placeholder="Busqueda de usuario por Nombre">
+                                <input type="text" name="Nombre" class="form-control" placeholder="Busqueda de por Nombre">
                                 <br><button type="submit" name="submit" class="btn btn-success btn-sm btn-block" id="dubmit">Buscar</button>
                               </form>
                            </div>

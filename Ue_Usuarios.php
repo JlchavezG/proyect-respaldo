@@ -17,15 +17,16 @@ if ($fila > 0) {
 // variable de busqueda para el usuario(Nombre)
 $where = "";
 if (empty($_POST['submit'])) {
-    $valor = $_POST['Serie'];
+    $valor = $_POST['Nombre'];
     if (!empty($valor)) {
-       $where = "WHERE Nserie LIKE '%$valor%'";
+       $where = "WHERE Email LIKE '%$valor%'";
     }
 }
 // consulta para extraer los datos de los usuarios
-$buscar = "SELECT * FROM Laptop $where";
+$buscar = "SELECT * FROM Usuarios $where";
 $busca = $conecta->query($buscar);
 $numero = $busca->num_rows;
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -57,17 +58,17 @@ $numero = $busca->num_rows;
              <div class="container-fluid">
                  <div class="text text-right">
                  </div>
-                 <h3 class="mt-4 text text-center">Consulta de Equipos</h3>
+                 <h3 class="mt-4 text text-center">Consulta de Usuarios</h3>
                        <div class="container py-3">
                           <a href="ConsultasS.php"><span class="icon-left-big"></span></a> Regresar a Consultas
                           <div class="row">
-                             <div class="container">
-                                  <a href="Fecha.php">Buscar por Fecha</a> | <a href="Folio.php">Buscar por Folio</a>
-                             </div>
+                              <div class="container">
+                               <a href="UsuariosS.php">Buscar por Nombre</a> | <a href="Ue_Usuarios.php">Buscar por Email</a>
+                              </div>
                           </div>
                            <div class="card-body">
                               <form class="" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                                <input type="text" name="Serie" class="form-control" placeholder="Busqueda de equipo por Numero de serie">
+                                <input type="text" name="Nombre" class="form-control" placeholder="Busqueda de usuario por Emeil">
                                 <br><button type="submit" name="submit" class="btn btn-success btn-sm btn-block" id="dubmit">Buscar</button>
                               </form>
                            </div>
@@ -75,35 +76,33 @@ $numero = $busca->num_rows;
                               <?php if ($busca > 0){ // si encuentra registros los presenta en la tabla ?>
                                <table class="table">
                                   <thead class="text-muted">
-                                     <th>Modelo</th>
-                                     <th>Marca</th>
-                                     <th>Numero de Serie</th>
-                                     <th>Key</th>
-                                     <th>Reset</th>
-                                     <th>Fecha</th>
-                                     <th>Folio</th>
-                                     <th>Estatus</th>
+                                     <th>Nombre</th>
+                                     <th>Apellido Paterno</th>
+                                     <th>Apellido Materno</th>
+                                     <th>Nivel</th>
+                                     <th>Telefono</th>
+                                     <th>Email</th>
+                                     <th>Usuario</th>
                                      <th>Opciones</th>
                                   </thead>
                                   <tbody>
                                     <?php while($row = $busca->fetch_assoc()){ ?>
                                      <tr>
-                                       <td><?php echo $row['Modelo']; ?></td>
-                                       <td><?php echo $row['Id_marca']; ?></td>
-                                       <td><?php echo $row['Nserie']; ?></td>
-                                       <td><?php echo $row['NKey']; ?></td>
-                                       <td><?php echo $row['Reset']; ?></td>
-                                       <td><?php echo $row['Fecha']; ?></td>
-                                       <td><?php echo $row['RegAuto']; ?></td>
-                                       <td><?php echo $row['Estatus']; ?></td>
-                                       <td><a href="Modificar_equipoS.php?Id_laptop=<?php echo $row['Id_laptop'] ?>"><span class="icon-pencil"></span></a> - <a href="./includes/Eliminar_equipoS.php?Id_laptop=<?php echo $row['Id_laptop'] ?>" onclick = "confirm(¿Estas Seguro de querer Eliminar el registro?);"><span class="icon-trash"></span></a></td>
+                                       <td><?php echo $row['Nombre']; ?></td>
+                                       <td><?php echo $row['ApellidoP']; ?></td>
+                                       <td><?php echo $row['ApellidoM']; ?></td>
+                                       <td><?php echo $row['Id_Nivel']; ?></td>
+                                       <td><?php echo $row['Telefono']; ?></td>
+                                       <td><?php echo $row['Email']; ?></td>
+                                       <td><?php echo $row['Usuario']; ?></td>
+                                       <td><a href="Modificar_usuarioS.php?Id_Usuario=<?php echo $row['Id_Usuario'] ?>"><span class="icon-pencil"></span></a> - <a href="./includes/Eliminar_usuarioS.php?Id_Usuario=<?php echo $row['Id_Usuario'] ?>" onclick = "confirm(¿Estas Seguro de querer Eliminar el registro?);"><span class="icon-trash"></span></a></td>
                                      </tr>
                                    <?php } ?>
                                   </tbody>
                                </table>
                              <?php } else { // si no encuentra registros muestra la siguiente alerta?>
                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                   <strong>No se encontraron registros</strong> Actualmente no hay resgistros en la base de datos.
+                                   <strong>No se enciontraron registros</strong> Actualmente no hay resgistros en la base de datos.
                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                       <span aria-hidden="true">&times;</span>
                                    </button>
@@ -112,10 +111,10 @@ $numero = $busca->num_rows;
                             </div>
                             <div class="card">
                                <div class="card-header">
-                                 <p class="text-muted text-right">Generar Reporte de Equipos por rango de fecha de ingreso</p>
+                                 <p class="text-muted text-right">Generar Reporte de Usuarios por rango de fecha de ingreso</p>
                                </div>
                                <div class="card-body">
-                                 <form class="form-group" action="includes/reporte_equipos_excel.php" method="post">
+                                 <form class="form-group" action="includes/reporte_usuarios_excel.php" method="post">
                                    <div class="form-row">
                                        <div class="col-lg-6 col-md-6 col-sm-6">
                                          <input type="date" name="fecha1" class="form-control" required>

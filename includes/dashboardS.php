@@ -20,7 +20,7 @@ $manto = "SELECT * FROM Laptop WHERE Identificador = 1";
 $result4 = $conecta->query($manto);
 $numero4 = $result4->num_rows;
 // consulta para tomar equipos no asignados
-$noasig = "SELECT * FROM Laptop WHERE Estatus = 2";
+$noasig = "SELECT * FROM Asignaciones WHERE Id_Estado = 1";
 $result5 = $conecta->query($noasig);
 $numero5 = $result5->num_rows;
 ?>
@@ -30,7 +30,7 @@ $numero5 = $result5->num_rows;
             <div class="card mb-3" style="max-width: 540px;">
                <div class="row no-gutters">
                   <div class="col-md-4">
-                     <h1 class="text text-center text-success"><?php echo $numero1 ;?></h1>
+                     <h1 class="text text-center text-success display-4"><?php echo $numero1 ;?></h1>
                   </div>
                   <div class="col-md-8">
                   <div class="card-body">
@@ -43,9 +43,9 @@ $numero5 = $result5->num_rows;
         </div>
         <div class="col-sm">
           <div class="card mb-3" style="max-width: 540px;">
-              <div class="row no-gutters">
+              <div class="row no-gutters text-center">
                  <div class="col-md-4">
-                    <h1 class="text text-center text-success"><?php echo $numero ;?></h1>
+                    <h1 class="text text-center text-success display-4"><?php echo $numero ;?></h1>
                  </div>
                  <div class="col-md-8">
                  <div class="card-body">
@@ -60,7 +60,7 @@ $numero5 = $result5->num_rows;
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row no-gutters">
                    <div class="col-md-4">
-                       <h1 class="text text-center text-success"><?php echo $numero2; ?></h1>
+                       <h1 class="text text-center text-success display-4"><?php echo $numero2; ?></h1>
                    </div>
                    <div class="col-md-8">
                    <div class="card-body">
@@ -80,7 +80,7 @@ $numero5 = $result5->num_rows;
                 <div class="card mb-3" style="max-width: 540px;">
                    <div class="row no-gutters">
                       <div class="col-md-4">
-                        <h1 class="text text-center text-success"><?php echo $numero3; ?></h1>
+                        <h1 class="text text-center text-success display-4"><?php echo $numero3; ?></h1>
                       </div>
                       <div class="col-md-8">
                       <div class="card-body">
@@ -95,7 +95,7 @@ $numero5 = $result5->num_rows;
               <div class="card mb-3" style="max-width: 540px;">
                   <div class="row no-gutters">
                      <div class="col-md-4">
-                       <h1 class="text text-center text-success"><?php echo $numero4; ?></h1>
+                       <h1 class="text text-center text-success display-4"><?php echo $numero4; ?></h1>
                      </div>
                      <div class="col-md-8">
                      <div class="card-body">
@@ -110,7 +110,7 @@ $numero5 = $result5->num_rows;
                 <div class="card mb-3" style="max-width: 540px;">
                     <div class="row no-gutters">
                        <div class="col-md-4">
-                            <h1 class="text text-center text-success"><?php echo $numero5; ?></h1>
+                            <h1 class="text text-center text-success display-4"><?php echo $numero5; ?></h1>
                        </div>
                        <div class="col-md-8">
                        <div class="card-body">

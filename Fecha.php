@@ -19,7 +19,7 @@ $where = "";
 if (empty($_POST['submit'])) {
     $valor = $_POST['Serie'];
     if (!empty($valor)) {
-       $where = "WHERE Nserie LIKE '%$valor%'";
+       $where = "WHERE Fecha LIKE '%$valor%'";
     }
 }
 // consulta para extraer los datos de los usuarios
@@ -67,7 +67,7 @@ $numero = $busca->num_rows;
                           </div>
                            <div class="card-body">
                               <form class="" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                                <input type="text" name="Serie" class="form-control" placeholder="Busqueda de equipo por Numero de serie">
+                                <input type="text" name="Serie" class="form-control" placeholder="Busqueda por fecha">
                                 <br><button type="submit" name="submit" class="btn btn-success btn-sm btn-block" id="dubmit">Buscar</button>
                               </form>
                            </div>

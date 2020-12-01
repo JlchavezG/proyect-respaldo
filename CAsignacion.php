@@ -17,11 +17,16 @@ if ($fila > 0) {
 // variable de busqueda para el usuario(Nombre)
 $where = "";
 if (empty($_POST['submit'])) {
-    $valor = $_POST['Fecha'];
+    $valor = $_POST['Numero'];
     if (!empty($valor)) {
-       $where = "WHERE Fecha LIKE '%$valor%'";
+       $where = "WHERE Numero LIKE '%$valor%'";
     }
 }
+// consulta inner join
+$I = "SELECT a.Id_asignacion, a.Id_Laptop, a.Id_Usuario, a.Fecha, a.Numero, a.User_Reg, a.Id_Estado, l.Id_laptop, l.Modelo, u.Id_Usuario, u.Nombre, u.ApellidoP, u.ApellidoM  FROM Asignaciones as a
+INNER JOIN Laptop as l ON a.Id_Laptop = l.Id_laptop INNER JOIN Usuarios as u ON a.Id_Usuario = u.Id_Usuario $where";
+$c = $conecta->query($I);
+$conteo = $c->fetch_array();
 
 // consulta para extraer los datos de los usuarios
 $buscar = "SELECT * FROM Asignaciones $where";
@@ -58,12 +63,17 @@ $numero = $busca->num_rows;
              <div class="container-fluid">
                  <div class="text text-right">
                  </div>
-                 <h3 class="mt-4 text text-center">Consulta de Asignaciones</h3>
+                 <h3 class="mt-4 text text-center">Consulta de Asignaciones por numero</h3>
                        <div class="container py-3">
-                          <a href="ConsultasS.php"><span class="icon-left-big"></span></a> Regresar a Consultas
+                          <a href="ConsultasS.php"><span class="icon-left-big"></span></a> Regresar a Consultas Por Uusario
                            <div class="card-body">
+                             <div class="row">
+                                 <div class="container">
+                                  <a href="B_Fecha.php">Buscar por Fecha</a> | <a href="B_Usuario.php">Buscar por Usuario</a>
+                                 </div>
+                             </div>
                               <form class="" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                                <input type="text" name="Serie" class="form-control" placeholder="Busqueda por fecha">
+                                <input type="text" name="Numero" class="form-control" placeholder="Busqueda por Numero">
                                 <br><button type="submit" name="submit" class="btn btn-success btn-sm btn-block" id="dubmit">Buscar</button>
                               </form>
                            </div>
@@ -71,8 +81,8 @@ $numero = $busca->num_rows;
                               <?php if ($busca > 0){ // si encuentra registros los presenta en la tabla ?>
                                <table class="table">
                                   <thead class="text-muted">
-                                     <th>Id_Laptop</th>
-                                     <th>Id_Usario</th>
+                                     <th>Modelo</th>
+                                     <th>Usuario</th>
                                      <th>Fecha</th>
                                      <th>Numero</th>
                                      <th>Usuario</th>
@@ -82,8 +92,8 @@ $numero = $busca->num_rows;
                                   <tbody>
                                     <?php while($row = $busca->fetch_assoc()){ ?>
                                      <tr>
-                                       <td><?php echo $row['Id_Laptop']; ?></td>
-                                       <td><?php echo $row['Id_Usuario']; ?></td>
+                                       <td><?php echo $conteo['Modelo']; ?></td>
+                                       <td><?php echo $conteo['Nombre']; ?></td>
                                        <td><?php echo $row['Fecha']; ?></td>
                                        <td><?php echo $row['Numero']; ?></td>
                                        <td><?php echo $row['User_Reg']; ?></td>

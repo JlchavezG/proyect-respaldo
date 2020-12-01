@@ -14,16 +14,21 @@ $fila = $respuesta->fetch_array();
 if ($fila > 0) {
   $user = $fila;
 }
+// consulta inner join
+$I = "SELECT a.Id_asignacion, a.Id_Laptop, a.Id_Usuario, a.Fecha, a.Numero, a.User_Reg, a.Id_Estado, l.Id_laptop, l.Modelo, u.Id_Usuario, u.Nombre, u.ApellidoP, u.ApellidoM  FROM Asignaciones as a
+INNER JOIN Laptop as l ON a.Id_Laptop = l.Id_laptop INNER JOIN Usuarios as u ON a.Id_Usuario = u.Id_Usuario";
+$c = $conecta->query($I);
+$conteo = $c->fetch_array();
 // variable de busqueda para el usuario(Nombre)
 $where = "";
 if (empty($_POST['submit'])) {
-    $valor = $_POST['Serie'];
+    $valor = $_POST['Numero'];
     if (!empty($valor)) {
-       $where = "WHERE Nserie LIKE '%$valor%'";
+       $where = "WHERE Fecha LIKE '%$valor%'";
     }
 }
 // consulta para extraer los datos de los usuarios
-$buscar = "SELECT * FROM Laptop $where";
+$buscar = "SELECT * FROM Asignaciones $where";
 $busca = $conecta->query($buscar);
 $numero = $busca->num_rows;
 ?>
@@ -38,7 +43,7 @@ $numero = $busca->num_rows;
     <link rel="stylesheet" href="css/fontello.css">
     <link rel="stylesheet" href="css/simple-sidebar.css">
     <link rel="stylesheet" href="css/pace.css">
-    <title>Consulta | Usuarios</title>
+    <title>Consulta | Asignaciones</title>
   </head>
   <body>
     <div class="d-flex" id="wrapper">
@@ -57,17 +62,17 @@ $numero = $busca->num_rows;
              <div class="container-fluid">
                  <div class="text text-right">
                  </div>
-                 <h3 class="mt-4 text text-center">Consulta de Equipos</h3>
+                 <h3 class="mt-4 text text-center">Consulta de Asignaciones Por Fecha</h3>
                        <div class="container py-3">
                           <a href="ConsultasS.php"><span class="icon-left-big"></span></a> Regresar a Consultas
-                          <div class="row">
-                             <div class="container">
-                                  <a href="Fecha.php">Buscar por Fecha</a> | <a href="Folio.php">Buscar por Folio</a>
-                             </div>
-                          </div>
                            <div class="card-body">
+                             <div class="row">
+                                 <div class="container">
+                                    <a href="CAsignacion.php">Buscar por Numero</a> | <a href="B_Usuario.php">Buscar por Usuario</a>
+                                 </div>
+                             </div>
                               <form class="" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                                <input type="text" name="Serie" class="form-control" placeholder="Busqueda de equipo por Numero de serie">
+                                <input type="text" name="Numero" class="form-control" placeholder="Busqueda por Fecha">
                                 <br><button type="submit" name="submit" class="btn btn-success btn-sm btn-block" id="dubmit">Buscar</button>
                               </form>
                            </div>
@@ -76,27 +81,23 @@ $numero = $busca->num_rows;
                                <table class="table">
                                   <thead class="text-muted">
                                      <th>Modelo</th>
-                                     <th>Marca</th>
-                                     <th>Numero de Serie</th>
-                                     <th>Key</th>
-                                     <th>Reset</th>
+                                     <th>Usuario</th>
                                      <th>Fecha</th>
-                                     <th>Folio</th>
-                                     <th>Estatus</th>
+                                     <th>Numero</th>
+                                     <th>Usuario</th>
+                                     <th>Qr</th>
                                      <th>Opciones</th>
                                   </thead>
                                   <tbody>
                                     <?php while($row = $busca->fetch_assoc()){ ?>
                                      <tr>
-                                       <td><?php echo $row['Modelo']; ?></td>
-                                       <td><?php echo $row['Id_marca']; ?></td>
-                                       <td><?php echo $row['Nserie']; ?></td>
-                                       <td><?php echo $row['NKey']; ?></td>
-                                       <td><?php echo $row['Reset']; ?></td>
+                                       <td><?php echo $conteo['Modelo']; ?></td>
+                                       <td><?php echo $conteo['Nombre']; ?></td>
                                        <td><?php echo $row['Fecha']; ?></td>
-                                       <td><?php echo $row['RegAuto']; ?></td>
-                                       <td><?php echo $row['Estatus']; ?></td>
-                                       <td><a href="Modificar_equipoS.php?Id_laptop=<?php echo $row['Id_laptop'] ?>"><span class="icon-pencil"></span></a> - <a href="./includes/Eliminar_equipoS.php?Id_laptop=<?php echo $row['Id_laptop'] ?>" onclick = "confirm(¿Estas Seguro de querer Eliminar el registro?);"><span class="icon-trash"></span></a></td>
+                                       <td><?php echo $row['Numero']; ?></td>
+                                       <td><?php echo $row['User_Reg']; ?></td>
+                                       <td><a href="qr/<?php echo $row['Numero'].'.png'; ?>" target="_blank"><?php echo $row['Numero'];?></td>
+                                       <td><a href="Modificar_Asigna.php?Id_asignacion=<?php echo $row['Id_asignacion'] ?>"><span class="icon-pencil"></span></a> - <a href="./includes/Eliminar_Asigna.php?Id_asignacion=<?php echo $row['Id_asignacion'] ?>" onclick = "confirm(¿Estas Seguro de querer Eliminar el registro?);"><span class="icon-trash"></span></a></td>
                                      </tr>
                                    <?php } ?>
                                   </tbody>
@@ -112,10 +113,10 @@ $numero = $busca->num_rows;
                             </div>
                             <div class="card">
                                <div class="card-header">
-                                 <p class="text-muted text-right">Generar Reporte de Equipos por rango de fecha de ingreso</p>
+                                 <p class="text-muted text-right">Generar Reporte de Asigmaciones por rango de fecha</p>
                                </div>
                                <div class="card-body">
-                                 <form class="form-group" action="includes/reporte_equipos_excel.php" method="post">
+                                 <form class="form-group" action="includes/reporte_Asignaciones.php" method="post">
                                    <div class="form-row">
                                        <div class="col-lg-6 col-md-6 col-sm-6">
                                          <input type="date" name="fecha1" class="form-control" required>
